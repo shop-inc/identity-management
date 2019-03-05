@@ -1,0 +1,33 @@
+{
+  "name": "shopinc-identity-management",
+  "version": "1.0.0",
+  "description": "The identity management microservice for ShopInc.",
+  "main": "index.js",
+  "repository": "https://github.com/shop-inc/identity-management.git",
+  "author": "shop.inc.dev@gmail.com",
+  "license": "MIT",
+  "scripts": {
+    "start:dev": "nodemon -x 'babel-node server'"
+  },
+  "dependencies": {
+    "@grpc/proto-loader": "^0.4.0",
+    "babel-cli": "^6.26.0",
+    "cors": "^2.8.5",
+    "debug": "~4.1.1",
+    "dotenv": "~6.2.0",
+    "grpc": "^1.19.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "~10.0.1",
+    "babel-plugin-transform-object-rest-spread": "~6.26.0",
+    "babel-preset-env": "~1.7.0",
+    "eslint": "~5.12.1",
+    "eslint-config-airbnb-base": "~13.1.0",
+    "eslint-plugin-import": "~2.14.0",
+    "nodemon": "~1.18.9"
+  },
+  "engines": {
+    "node": "11.x",
+    "yarn": "1.13.x"
+  }
+}
