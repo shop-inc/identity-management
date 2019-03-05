@@ -18,12 +18,12 @@ const identityPackageDefinition = protoLoader.loadSync(
 
 const grpcServer = new grpc.Server();
 const identityDescriptor = grpc.loadPackageDefinition(identityPackageDefinition);
-const { ExampleService } = identityDescriptor;
+const { ExampleService }: any = identityDescriptor;
 
 grpcServer.addService(ExampleService.service, {
-    greet: (incomingMessage, callback) => {
+    greet: (incomingMessage: any, callback: any) => {
         const { request: { name } } = incomingMessage;
-        callback(null, { greeting: `Hello, ${name}` })
+        callback(null, { greeting: `Hello, ${name}` });
     }
 });
 

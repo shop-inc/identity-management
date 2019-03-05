@@ -7,7 +7,7 @@ import { VariableNotFound } from '../exceptions';
 
 dotenv.config();
 
-const config = {};
+const config: any = {};
 
 // NODE_ENV will be needed for this switch statement, if not found then throw error
 if (!process.env.NODE_ENV) {
