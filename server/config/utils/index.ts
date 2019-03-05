@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import VariableNotFound from '../../exceptions';
+import { VariableNotFound } from '../../exceptions';
 import generalOptionalVariables from './optionalVariables';
 import generalRequiredVariables from './requiredVariables';
 
@@ -7,7 +7,7 @@ dotenv.config();
 
 const getEnv = (
     requiredVariables = generalRequiredVariables,
-    optionalVariables = generalOptionalVariables
+    optionalVariables: any = generalOptionalVariables
 ) => {
     requiredVariables.forEach((variable) => {
         if (!process.env[variable]) {

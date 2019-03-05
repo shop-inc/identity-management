@@ -7,7 +7,7 @@ class CustomException extends Error {
 }
 
 export class VariableNotFound extends CustomException {
-    constructor(variable) {
+    constructor(variable: string) {
         super();
         this.message = `${variable} is required as an environment variable but it was not found!`;
     }
