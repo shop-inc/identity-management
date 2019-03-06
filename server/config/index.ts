@@ -1,4 +1,3 @@
-/* eslint-disable global-require */
 import dotenv from 'dotenv';
 import testConfig from './test';
 import developmentConfig from './development';
