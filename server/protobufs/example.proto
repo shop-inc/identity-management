@@ -1,13 +1,13 @@
 syntax="proto3";
 
-service ExampleService {
-    rpc Greet (User) returns (HelloMessage) {}
+service IdentityService {
+    rpc CreateUser (User) returns (UserMessage) {}
 }
 
 message User {
     string name = 1;
 }
 
-message HelloMessage {
-    string greeting = 1;
+message UserMessage {
+    string userResult = 1;
 }
