@@ -1,6 +1,7 @@
 import env from './config';
 import grpc from 'grpc';
 import { resolve } from 'path';
+import createUser from './procedures'
 
 const {GRPC_SERVER_HOST, GRPC_SERVER_PORT} = env;
 
@@ -18,13 +19,10 @@ const identityPackageDefinition = protoLoader.loadSync(
 
 const grpcServer = new grpc.Server();
 const identityDescriptor = grpc.loadPackageDefinition(identityPackageDefinition);
-const { ExampleService }: any = identityDescriptor;
+const { IdentityService }: any = identityDescriptor;
 
-grpcServer.addService(ExampleService.service, {
-    greet: (incomingMessage: any, callback: any) => {
-        const { request: { name } } = incomingMessage;
-        callback(null, { greeting: `Hello, ${name}` });
-    }
+grpcServer.addService(IdentityService.service, {
+    createUser: createUser,
 });
 
 grpcServer.bind(`${GRPC_SERVER_HOST}:${GRPC_SERVER_PORT}`, grpc.ServerCredentials.createInsecure());

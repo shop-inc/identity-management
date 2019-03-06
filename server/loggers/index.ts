@@ -3,7 +3,6 @@
  * @see module:loggers */
 /** @module loggers */
 
-/* eslint-disable no-console */
 import debug from 'debug';
 
 /**
@@ -11,8 +10,6 @@ import debug from 'debug';
  * It uses the namespace 'ShopInc' and logs to process.stdout.
  */
 const mainLogger = debug('ShopInc');
-console.log('x'.repeat(150));
-console.log(mainLogger);
 mainLogger.log = console.log.bind(console);
 
 /**

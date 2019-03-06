@@ -7,7 +7,7 @@ const requiredVariables: Array<string> = [];
 const optionalVariables = {
     GRAPH_DB_USER: 'neo4j',
     GRAPH_DB_PASSWORD: 'admin',
-    GRAPH_DB_HOST: 'localhost',
+    GRAPH_DB_HOST: 'bolt://localhost:7687',
     GRAPH_DB_NAME: 'shopinc_dev',
     ...generalOptionalVariables,
 };
