@@ -1,0 +1,20 @@
+syntax="proto3";
+
+service IdentityService {
+    rpc CreateUser (GoogleIdToken) returns (UserInfo) {}
+}
+
+message GoogleIdToken {
+    string token = 1;
+}
+
+message UserInfo {
+    string name = 1;
+    string email = 2;
+    message Profile {
+        string imageUrl = 1;
+        string lastUpdated = 2;
+    };
+    Profile profile = 3;
+    string token = 4;
+}
