@@ -23,4 +23,11 @@ export class InvalidIdToken extends CustomException {
   }
 }
 
+export class UnverifiedUser extends CustomException {
+  constructor() {
+    super();
+    this.message = `Your account has not been verified! Click on resend email then verify.`;
+  }
+}
+
 export default CustomException;

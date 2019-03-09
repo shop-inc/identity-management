@@ -1,3 +1,4 @@
+import { UnverifiedUser } from '../../exceptions';
 import db from '../index';
 import Profile from './profile';
 import Role, { administrator, buyer } from './role';
@@ -15,7 +16,7 @@ class User {
       const { records } = await db.run(
         `MATCH (u:User { email: $email })-[relIs:IS]->(role:Role),
                          (u)-[:HAS]->(p:Profile)
-                   RETURN u.name AS name, u.email AS email, p.imageUrl AS picture,
+                   RETURN u.name AS name, u.email AS email, p.imageUrl AS picture, p.lastUpdated AS lastUpdated,
                     relIs.verified AS verified, relIs.mailSent AS mailSent,
                      relIs.mailSentDate AS mailSentDate, role.roleName as roleName`
         , { email });
@@ -31,6 +32,7 @@ class User {
         mailSentDate: record.get('mailSentDate'),
         roleName: record.get('roleName'),
         picture: record.get('picture'),
+        lastUpdated: record.get('lastUpdated'),
       };
       return new User(params);
     } catch (e) {
@@ -102,23 +104,43 @@ class User {
     mailSentDate: this.mailSentDate,
   });
 
-  public updateMailSent = async () => {
+  public updateMailSent = async (properties ?: { mailSentDate?: string, mailSent?: boolean}) => {
     try {
+
+      const props = {
+        mailSent: true,
+        mailSentDate: new Date().toISOString(),
+        ...properties,
+      }
+
       await db.run(
         'MATCH (: User { email: $email })-[r:IS]->(:Role { roleName: $roleName }) SET r += $props;',
         {
           ...this.serialize(),
-          props: {
-            mailSent: true,
-            mailSentDate: new Date().toISOString(),
-          },
+          props,
         });
+      this.mailSent = props.mailSent;
+      this.mailSentDate = props.mailSentDate;
     } catch (e) {
       // TODO Handle exception
       /* istanbul ignore next */
       throw e;
     }
   };
+
+  public checkVerifiedUser() {
+    // Checking if the email was sent
+    const sentDate: number = new Date(Date.parse(this.mailSentDate)).getTime();
+    const timeDifference = new Date().getTime() - sentDate;
+    // tslint:disable-next-line: whitespace
+    const intervalDays = (timeDifference/1000)/60/60/24;
+    if (this.mailSent && !this.verified) {
+      if (Math.floor(intervalDays) > 3) {
+        throw new UnverifiedUser();
+      }
+    }
+    return;
+  }
 }
 
 export class Administrator extends User {

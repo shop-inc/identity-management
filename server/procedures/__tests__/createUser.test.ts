@@ -1,4 +1,4 @@
-import { verifyIdToken} from '../../../__mocks__/google-auth-library';
+import { verifyIdToken } from '../../../__mocks__/google-auth-library';
 import { send } from '../../../__mocks__/mailgun-js';
 import env from '../../config';
 import { buyer } from '../../database/models/role';
