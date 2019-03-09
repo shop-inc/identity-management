@@ -6,6 +6,7 @@ class CustomException extends Error {
   }
 }
 
+// tslint:disable-next-line: max-classes-per-file
 export class VariableNotFound extends CustomException {
   constructor(variable: string) {
     super();
@@ -13,12 +14,12 @@ export class VariableNotFound extends CustomException {
   }
 }
 
+// tslint:disable-next-line: max-classes-per-file
 export class InvalidIdToken extends CustomException {
   constructor() {
     super();
     this.message = `The id token provided is invalid!`;
   }
 }
-
 
 export default CustomException;

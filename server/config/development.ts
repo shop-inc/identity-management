@@ -3,7 +3,7 @@ import generalOptionalVariables from './utils/optionalVariables';
 import r from './utils/requiredVariables';
 
 // Define the required variables
-const requiredVariables: Array<string> = [...r];
+const requiredVariables: string[] = [...r];
 // Define optional environment variables and their defaults for development
 const optionalVariables = {
     GRAPH_DB_USER: 'neo4j',

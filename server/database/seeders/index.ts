@@ -1,6 +1,6 @@
+import env from '../../config';
 import {administrator, buyer, seller} from '../models/role';
 import {Administrator} from '../models/user';
-import env from '../../config'
 
 export const seedRoles = async () => {
   await administrator.save();
@@ -18,7 +18,6 @@ export const seedAdminUser = async () => {
   await adminUser.save();
 };
 
-
 const seedDB = async () => {
   await seedRoles();
   await seedAdminUser();
@@ -26,7 +25,7 @@ const seedDB = async () => {
 
 export default seedDB;
 
-if (require.main === module){
+if (require.main === module) {
   // @ts-ignore
   seedDB().then(process.exit);
 }

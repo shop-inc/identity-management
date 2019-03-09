@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
-import testConfig from './test';
+import { VariableNotFound } from '../exceptions';
 import developmentConfig from './development';
 import stagingConfig from './staging';
-import { VariableNotFound } from '../exceptions';
+import testConfig from './test';
 
 dotenv.config();
 

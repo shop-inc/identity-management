@@ -1,23 +1,32 @@
 import {TokenPayload} from 'google-auth-library/build/src/auth/loginticket';
-import Profile from './profile';
 import db from '../index';
+import Profile from './profile';
 import Role, {administrator, buyer} from './role';
 
 class User {
-  name: string;
-  email: string;
-  profile: Profile;
-  role: Role;
-  
-  constructor(identity: TokenPayload | administratorIdentity ){
+
+  public static async getUserByEmail(email: string) {
+    try {
+      const { records } = await db.run('MATCH (n:User { email: $email }) RETURN n;', { email });
+      return records;
+    } catch (e) {
+      throw e;
+    }
+  }
+  public name: string;
+  public email: string;
+  public profile: Profile;
+  public role: Role;
+
+  constructor(identity: TokenPayload | administratorIdentity ) {
     this.name = identity.name;
     this.email = identity.email;
     this.profile = new Profile(identity.picture);
     // Role is set to buyer by default
     this.role = buyer;
   }
-  
-  async save() {
+
+  public async save() {
     const params: object = {
       email: this.email,
       name: this.name,
@@ -28,7 +37,7 @@ class User {
     try {
       // If this user exists, exit
       const userNodes = await User.getUserByEmail(this.email);
-      if (userNodes.length){
+      if (userNodes.length) {
         return;
       }
       // Create the User
@@ -48,23 +57,15 @@ class User {
       throw e;
     }
   }
-  
-  toString(){
+
+  public toString() {
     return this.name;
-  }
-  
-  static async getUserByEmail(email:string){
-    try {
-      const { records } = await db.run('MATCH (n:User { email: $email }) RETURN n;', { email });
-      return records;
-    }catch (e) {
-      throw e;
-    }
   }
 }
 
+// tslint:disable-next-line: max-classes-per-file
 export class Administrator extends User {
-  constructor(adminIdentity: administratorIdentity){
+  constructor(adminIdentity: administratorIdentity) {
     super(adminIdentity);
     this.role = administrator;
   }
