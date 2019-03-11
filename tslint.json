@@ -7,7 +7,9 @@
   "rules": {
     "interface-name": [false],
     "no-console": [false],
-    "quotemark": [true, "single"]
+    "quotemark": [true, "single"],
+    "object-literal-sort-keys": [false],
+    "jsdoc-format": [false]
   },
   "rulesDirectory": []
 }

@@ -7,7 +7,7 @@ dotenv.config();
 
 const getEnv = (
     requiredVariables = generalRequiredVariables,
-    optionalVariables: any = generalOptionalVariables
+    optionalVariables: any = generalOptionalVariables,
 ) => {
     Object.keys(optionalVariables)
       .forEach((variable) => {
@@ -18,13 +18,13 @@ const getEnv = (
                   // which will be needed by 'debug' while assigning namespaces
                   const { warningLogger } = require('../../loggers');
                   warningLogger(
-                    `${variable} was not found in env, defaulting to ${optionalVariables[variable]} .`
+                    `${variable} was not found in env, defaulting to ${optionalVariables[variable]} .`,
                   );
               });
               process.env[variable] = optionalVariables[variable];
           }
       });
-    
+
     requiredVariables.forEach((variable) => {
         if (!process.env[variable]) {
             throw new VariableNotFound(variable);

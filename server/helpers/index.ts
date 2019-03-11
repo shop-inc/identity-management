@@ -1,7 +1,7 @@
 /** Helper functions that are reused throughout the microservice */
-import User from '../database/models/user';
-import env from '../config';
 import jwt from 'jsonwebtoken';
+import env from '../config';
+import User from '../database/models/user';
 
 export const generateJWT = (user: User) => {
   const { SECRET_KEY } = env;

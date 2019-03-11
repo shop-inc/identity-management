@@ -10,6 +10,7 @@
     "copy-protobufs": "rm -r ./dist/protobufs/ && cp -R ./server/protobufs ./dist",
     "ts": "tsc",
     "ts:watch": "tsc -w",
+    "lint": "./node_modules/.bin/tslint --project '.'",
     "start:dev": "yarn ts && yarn copy-protobufs && NODE_ENV=development nodemon dist/index.js",
     "db:seed": "yarn ts && node dist/database/seeders"
   },
