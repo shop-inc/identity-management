@@ -1,5 +1,5 @@
 export default {
-    GRAPH_DB_PORT: '7687',
+    GRAPH_DB_PORT: '7474',
     DEBUG: 'ShopInc*',
     GRPC_SERVER_PORT: 50051,
     ADMINISTRATOR_PICTURE:
