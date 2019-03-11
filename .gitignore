@@ -62,3 +62,5 @@ typings/
 
 # TS Output
 dist/
+*.map
+*.js

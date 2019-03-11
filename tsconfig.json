@@ -7,17 +7,13 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "dist",
-    "baseUrl": ".",
-    "paths": {
-      "*": [
-        "node_modules/*",
-      ]
-    },
+    "removeComments": false,
     "lib": [
       "es2018"
     ]
   },
   "include": [
-    "server/**/*"
-  ]
+    "server"
+  ],
+  "exclude": ["__mocks__", "*/**/__tests__"]
 }

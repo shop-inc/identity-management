@@ -1,6 +1,6 @@
 import env from '../../config';
-import {administrator, buyer, seller} from '../models/role';
-import {Administrator} from '../models/user';
+import { administrator, buyer, seller } from '../models/role';
+import { Administrator } from '../models/user';
 
 export const seedRoles = async () => {
   await administrator.save();
@@ -26,6 +26,11 @@ const seedDB = async () => {
 export default seedDB;
 
 if (require.main === module) {
-  // @ts-ignore
-  seedDB().then(process.exit);
+  /* istanbul ignore next */
+  process.on('unhandledRejection', (reason) => {
+    console.error(reason);
+    process.exit();
+  });
+  /* istanbul ignore next */
+  seedDB().then(() => process.exit(0));
 }

@@ -1,10 +1,10 @@
-import {OAuth2Client} from 'google-auth-library';
-import {TokenPayload} from 'google-auth-library/build/src/auth/loginticket';
-import {ServerUnaryCall} from 'grpc';
+import { OAuth2Client } from 'google-auth-library';
+import { TokenPayload } from 'google-auth-library/build/src/auth/loginticket';
+import { ServerUnaryCall } from 'grpc';
 import env from '../config';
 import User from '../database/models/user';
-import {InvalidIdToken} from '../exceptions';
-import { generateJWT } from '../helpers';
+import { InvalidIdToken } from '../exceptions';
+import { generateJWT, VerificationEmail } from '../helpers';
 
 const { GOOGLE_CLIENT_ID } = env;
 
@@ -22,7 +22,6 @@ const verify = async (idToken: string) => {
     });
     return ticket.getPayload();
   } catch (e) {
-    console.error(e);
     throw new InvalidIdToken();
   }
 };
@@ -32,7 +31,10 @@ const createUser = async (incomingMessage: ServerUnaryCall<object> , callback: c
     // @ts-ignore
     const { request: { token: idToken } } = incomingMessage;
     const identity: TokenPayload = await verify(idToken);
-    const user = new User(identity);
+    let user = await User.findUserByEmail(identity.email);
+    if (!user) {
+      user = new User(identity);
+    }
     await user.save();
     const token = generateJWT(user);
     const response = {
@@ -44,7 +46,14 @@ const createUser = async (incomingMessage: ServerUnaryCall<object> , callback: c
       },
       token,
     };
-    callback(null,  response);
+    // Callback with the response since mail sending is asynchronous
+    callback(null, response);
+
+    // Send the email if the user had not been sent an email
+    if (!user.mailSent) {
+      const verificationEmail = new VerificationEmail(user);
+      verificationEmail.send();
+    }
   } catch (error) {
     callback(error);
   }
