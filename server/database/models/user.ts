@@ -4,8 +4,6 @@ import Profile from './profile';
 import Role, { administrator, buyer } from './role';
 
 class User {
-  [index: string]: any;
-
   /**
    * Returns an instance of User if a user with the given email was found, else false
    * @param email {String} The user's email

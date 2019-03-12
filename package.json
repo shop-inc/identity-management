@@ -7,11 +7,10 @@
   "author": "shop.inc.dev@gmail.com",
   "license": "MIT",
   "scripts": {
-    "copy-protobufs": "rm -rf ./dist/protobufs/ && cp -R ./server/protobufs ./dist",
     "ts": "tsc",
     "ts:watch": "tsc -w",
     "lint": "./node_modules/.bin/tslint --project '.'",
-    "start:dev": "yarn ts && yarn copy-protobufs && NODE_ENV=development nodemon dist/index.js",
+    "start:dev": "yarn ts && NODE_ENV=development nodemon dist/index.js",
     "db:seed": "yarn ts && node dist/database/seeders",
     "test": "jest --config=jest.config.json --runInBand --detectOpenHandles --forceExit --coverage"
   },
