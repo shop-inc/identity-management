@@ -1,10 +1,12 @@
 /** Helper functions that are reused throughout the microservice */
 // @ts-ignore
 import jwt from 'jsonwebtoken';
+import mjml2html from 'mjml';
 import env from '../config';
 import User from '../database/models/user';
 import { serverLogger } from '../loggers';
 import MailEventEmitter from './mail';
+import generateMJMLTemplate from './templates/mailTemplate';
 
 const { SECRET_KEY } = env;
 
@@ -38,7 +40,12 @@ export class VerificationEmail {
 
   private verificationMailTemplate = (name: string) => {
     // TODO Create a good verification email template
-    return `<div>${name} ${this.token}</div>`;
+    const { FRONTEND_URL } = env;
+    const verifyURL = `${FRONTEND_URL}/verify/${this.token}`;
+    // Generate the MJML template
+    const template = generateMJMLTemplate(name, verifyURL);
+    // Convert to html
+    return mjml2html(template).html;
   };
 
   private handleSendSuccess = () => {
