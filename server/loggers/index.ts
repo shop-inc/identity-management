@@ -1,6 +1,7 @@
 /**
  * @file Initiates all logger instances.
  * @see module:loggers */
+
 /** @module loggers */
 
 import debug from 'debug';
@@ -33,12 +34,6 @@ warningLogger.log = console.warn.bind(console);
  * It uses the namespace 'ShopInc:Server' and logs to process.stdout.
  */
 export const serverLogger = mainLogger.extend('Server');
-
-/**
- * Logs any and all information to do with the SQL database.
- * It uses the namespace 'ShopInc:SQL Database' and logs to process.stdout.
- */
-export const sqlLogger = mainLogger.extend('SQL Database');
 
 /**
  * Exports the {@link module:loggers~mainLogger mainLogger}.

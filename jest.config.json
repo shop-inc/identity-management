@@ -1,0 +1,10 @@
+{
+  "preset": "ts-jest",
+  "testEnvironment": "node",
+  "testMatch":  ["<rootDir>/**/__tests__/**/*.ts"],
+  "moduleFileExtensions": [
+    "ts",
+    "js"
+  ],
+  "coveragePathIgnorePatterns": ["//node_modules/", "/__mocks__/", "config/"]
+}

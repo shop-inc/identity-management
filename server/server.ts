@@ -3,13 +3,14 @@ import interceptors from '@echo-health/grpc-interceptors';
 import grpc from 'grpc';
 import { resolve } from 'path';
 import env from './config';
-import {serverLogger} from './loggers';
+import { serverLogger } from './loggers';
 import procedures from './procedures';
 
 const {GRPC_SERVER_HOST, GRPC_SERVER_PORT} = env;
 
 const PROTO_PATH = resolve(__dirname, './protobufs');
 
+// @ts-ignore
 // tslint:disable-next-line: no-var-requires
 const protoLoader = require('@grpc/proto-loader');
 const identityPackageDefinition = protoLoader.loadSync(
@@ -18,7 +19,7 @@ const identityPackageDefinition = protoLoader.loadSync(
         longs: String,
         enums: String,
         defaults: true,
-        oneofs: true,
+      oneofs: true,
     });
 
 const grpcServer = interceptors.serverProxy(new grpc.Server());

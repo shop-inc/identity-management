@@ -2,9 +2,9 @@ class Profile {
   public imageUrl: string;
   public lastUpdated: string;
 
-  constructor(imageUrl: string) {
+  constructor(imageUrl: string, lastUpdated?: string) {
     this.imageUrl = imageUrl;
-    this.lastUpdated = new Date().toISOString();
+    this.lastUpdated = lastUpdated || new Date().toISOString();
   }
 }
 

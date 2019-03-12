@@ -1,13 +1,10 @@
-import dotenv from 'dotenv';
 import { VariableNotFound } from '../../exceptions';
 import generalOptionalVariables from './optionalVariables';
 import generalRequiredVariables from './requiredVariables';
 
-dotenv.config();
-
 const getEnv = (
-    requiredVariables = generalRequiredVariables,
-    optionalVariables: any = generalOptionalVariables,
+  requiredVariables: string[] = generalRequiredVariables,
+  optionalVariables: any = generalOptionalVariables,
 ) => {
     Object.keys(optionalVariables)
       .forEach((variable) => {

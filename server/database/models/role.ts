@@ -3,20 +3,18 @@ import db from '../index';
 class Role {
 
   public static async getRoleByName(roleName: string) {
+    // TODO return instance of role
     const { records } = await db.run(
       'MATCH (r:Role { roleName: $roleName }) RETURN r;',
       { roleName },
     );
     return records;
   }
+
   public roleName: string;
 
   constructor(roleName: string) {
     this.roleName = roleName;
-  }
-
-  public toString(): string {
-    return this.roleName;
   }
 
   public async save() {

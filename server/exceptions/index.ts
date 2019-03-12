@@ -8,6 +8,7 @@ class CustomException extends Error {
 
 // tslint:disable-next-line: max-classes-per-file
 export class VariableNotFound extends CustomException {
+  /* istanbul ignore next */
   constructor(variable: string) {
     super();
     this.message = `${variable} is required as an environment variable but it was not found!`;
