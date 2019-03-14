@@ -18,12 +18,14 @@
   "dependencies": {
     "@echo-health/grpc-interceptors": "^0.0.12",
     "@grpc/proto-loader": "^0.4.0",
+    "@types/mjml": "^4.0.2",
     "debug": "~4.1.1",
     "dotenv": "~6.2.0",
     "google-auth-library": "^3.1.0",
     "grpc": "^1.19.0",
     "jsonwebtoken": "^8.5.0",
     "mailgun-js": "^0.22.0",
+    "mjml": "^4.4.0-beta.1",
     "neo4j-driver": "^1.7.2"
   },
   "devDependencies": {
