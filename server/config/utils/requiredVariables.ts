@@ -14,4 +14,5 @@ export default [
   'FRONTEND_URL',
   'MAILGUN_DOMAIN',
   'MAILGUN_API_KEY',
+  'PROTOBUF_USER',
 ];

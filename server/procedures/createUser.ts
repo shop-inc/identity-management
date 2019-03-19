@@ -1,4 +1,3 @@
-import { TokenPayload } from 'google-auth-library/build/src/auth/loginticket';
 import { ServerUnaryCall } from 'grpc';
 import User from '../database/models/user';
 import { generateJWT, VerificationEmail, verifyGoogleToken } from '../helpers';
@@ -7,8 +6,8 @@ const createUser = async (incomingMessage: ServerUnaryCall<object> , callback: c
   try {
     // @ts-ignore
     const { request: { token: idToken } } = incomingMessage;
-    const identity: TokenPayload = await verifyGoogleToken(idToken);
-    let user: any = await User.findUserByEmail(identity.email);
+    const identity = await verifyGoogleToken(idToken);
+    let user = await User.findUserByEmail(identity.email);
     if (!user) {
       user = new User(identity);
     }
