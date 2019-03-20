@@ -1,0 +1,89 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2
+
+defaults: &defaults
+  docker:
+    - image: circleci/node:11.12.0-stretch
+      environment:
+        ADMINISTRATOR_NAME: Test Admin
+        NODE_ENV: test
+        GRAPH_DB_CONNECTION_TIMEOUT: 15000
+    - image: neo4j:3.5.3
+      environment:
+        NEO4J_AUTH: none
+  working_directory: ~/identity-management
+
+install_npm_packages: &install_npm_packages
+  run:
+    name: Install Npm Dependencies
+    command: yarn install
+
+attach_workspace: &attach_workspace
+  attach_workspace:
+    at: ~/identity-management
+
+persist_to_workspace: &persist_to_workspace
+  persist_to_workspace:
+    root: .
+    paths: .
+
+filters: &filters
+  filters:
+    branches:
+      only:
+        - develop
+        - master
+
+jobs:
+  checkout_code:
+    <<: *defaults
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
+      - *install_npm_packages
+
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+            - node_modules
+      - *persist_to_workspace
+
+  test_and_report:
+    <<: *defaults
+    steps:
+      - *attach_workspace
+      - *install_npm_packages
+      - run:
+          name: Run identity-management lint test
+          command: yarn lint
+      - run:
+          name: install dockerize
+          command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+          environment:
+            DOCKERIZE_VERSION: v0.6.1
+      - run:
+          name: Wait for neo4j(Graphdb) to be ready
+          command: dockerize -wait tcp://localhost:7687 -timeout 1m
+      - run:
+          name: Run identity-management test suites
+          command:
+            yarn test
+      - *persist_to_workspace
+
+workflows:
+  version: 2
+  test_build_deploy:
+    jobs:
+      - checkout_code
+      - test_and_report:
+          requires:
+            - checkout_code
