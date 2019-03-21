@@ -68,3 +68,5 @@ dist/
 *.proto
 
 .DS_Store
+
+neo4j
