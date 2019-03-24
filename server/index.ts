@@ -29,10 +29,7 @@ const getProtocolBuffer = async () => {
 };
 
 process.nextTick(async () => {
-  const { NODE_ENV } = env;
-  if (NODE_ENV === 'production' || NODE_ENV === 'staging') {
-    await getProtocolBuffer();
-  }
+  await getProtocolBuffer();
   // tslint:disable-next-line: no-var-requires
   const protoLoader = require('@grpc/proto-loader');
   const identityPackageDefinition = protoLoader.loadSync(

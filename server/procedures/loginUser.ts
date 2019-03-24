@@ -1,15 +1,19 @@
-import {TokenPayload} from 'google-auth-library/build/src/auth/loginticket';
-import {ServerUnaryCall} from 'grpc';
+import { TokenPayload } from 'google-auth-library/build/src/auth/loginticket';
+import { ServerUnaryCall } from 'grpc';
 import User from '../database/models/user';
-import { generateJWT } from '../helpers';
-import { verifyGoogleToken } from '../helpers';
+import { UserNotFound } from '../exceptions';
+import { generateJWT, verifyGoogleToken } from '../helpers';
 
 const loginUser = async (incomingMessage: ServerUnaryCall<object> , callback: clientCallback) => {
   try {
     // @ts-ignore
     const { request: { token: idToken } } = incomingMessage;
     const identity: TokenPayload = await verifyGoogleToken(idToken);
-    const user: any = await User.findUserByEmail(identity.email);
+    const user = await User.findUserByEmail(identity.email);
+    if (!(user instanceof User)) {
+      callback(new UserNotFound());
+      return;
+    }
     await user.checkVerifiedUser();
     const token = generateJWT(user);
     const {
