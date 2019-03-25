@@ -30,4 +30,10 @@ export class UnverifiedUser extends CustomException {
   }
 }
 
+export class UserNotFound extends CustomException {
+  constructor() {
+    super();
+    this.message = `User not found!`;
+  }
+}
 export default CustomException;

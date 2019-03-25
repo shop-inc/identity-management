@@ -14,6 +14,7 @@ const optionalVariables = {
   GRPC_SERVER_HOST: '127.0.0.1',
   GOOGLE_CLIENT_ID: 'our google client id',
   ADMINISTRATOR_EMAIL: 'admin@shop-inc.com',
+  PROTOBUF_USER: 'protobuf-user',
   ...generalOptionalVariables,
 };
 
