@@ -1,0 +1,16 @@
+node_modules/
+server/
+coverage
+docker
+.github
+__mocks__
+neo4j
+.env
+jest.config.json
+env.example
+.gitignore
+tslint.json
+tsconfig.json
+README.md
+LICENSE
+*.proto
