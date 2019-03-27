@@ -6,4 +6,5 @@ export default {
       'https://lh3.googleusercontent.com/-bj_ckbmgPng/AAAAAAAAAAI/AAAAAAAAAAc/eHIrrH6rhT0/s96-c/photo.jpg',
     PROTOBUF_URL: 'https://raw.githubusercontent.com/',
     PROTOBUF_BRANCH: 'develop',
+    GRAPH_DB_CONNECTION_TIMEOUT: 5000,
 };
