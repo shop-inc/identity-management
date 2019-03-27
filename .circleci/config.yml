@@ -2,7 +2,7 @@
 #
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
-version: 2
+version: 2.0
 
 defaults: &defaults
   docker:
@@ -74,9 +74,23 @@ jobs:
           name: Wait for neo4j(Graphdb) to be ready
           command: dockerize -wait tcp://localhost:7687 -timeout 1m
       - run:
+          name: Install code climate test reporter
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+      - run:
+          name: Prepare for coverage report
+          command:
+            ./cc-test-reporter before-build
+      - run:
           name: Run identity-management test suites
           command:
             yarn test
+      - run:
+          name: Upload test coverage report
+          command:
+            ./cc-test-reporter after-build -t lcov --exit-code $?
+
       - *persist_to_workspace
 
 workflows:
