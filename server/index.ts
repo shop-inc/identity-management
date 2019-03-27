@@ -3,6 +3,7 @@ import grpc from 'grpc';
 import https from 'https';
 import { basename, resolve } from 'path';
 import env from './config';
+import { serverLogger } from './loggers';
 import procedures from './procedures';
 import grpcServer from './server';
 
@@ -17,7 +18,10 @@ const getProtocolBuffer = async () => {
     https.get(`${PROTO_PATH}${basename(IDENTITY_PROTO)}`, (response) => {
       response.setEncoding('utf-8');
       const writeStream = fs.createWriteStream(IDENTITY_PROTO);
-      writeStream.on('close', fulfil);
+      writeStream.on('close', () => {
+        serverLogger('Successfully retrieved protocol buffers');
+        fulfil();
+      });
       response.on('error', reject);
       writeStream.on('error', reject);
       // Received the error below when trying to do response.on('end', writeStream.close);
