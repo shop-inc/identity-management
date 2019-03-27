@@ -10,8 +10,10 @@
     "ts": "tsc",
     "ts:watch": "tsc -w",
     "lint": "./node_modules/.bin/tslint --project '.'",
+    "start": "yarn db:seed && node dist/index.js",
     "start:dev": "yarn ts && NODE_ENV=development nodemon dist/index.js",
-    "db:seed": "yarn ts && node dist/database/seeders",
+    "db:seed": "node dist/database/seeders",
+    "db:seed:dev": "yarn ts && yarn db:seed",
     "test": "jest --config=jest.config.json --runInBand --detectOpenHandles --forceExit --coverage"
   },
   "dependencies": {

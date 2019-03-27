@@ -15,5 +15,5 @@
   "include": [
     "server"
   ],
-  "exclude": ["__mocks__", "*/**/__tests__"]
+  "exclude": ["__mocks__", "*/**/__tests__", "*/**/mockData"]
 }

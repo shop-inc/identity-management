@@ -70,3 +70,5 @@ dist/
 .DS_Store
 
 neo4j
+
+k8s/secrets/
