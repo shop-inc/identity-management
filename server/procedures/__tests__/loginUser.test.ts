@@ -3,7 +3,6 @@ import env from '../../config';
 import User from '../../database/models/user';
 import { clearDB } from '../../database/queries';
 import seedDB from '../../database/seeders';
-import createUser from '../createUser';
 import loginUser from '../loginUser';
 import { mockUser } from '../mockData';
 
@@ -34,12 +33,23 @@ describe('Login User rpc', () => {
       const [[args]] = clientCallback.mock.calls;
       expect(args.message).toEqual('The id token provided is invalid!');
       done();
+    }); });
+
+  describe('should log the user in', () => {
+    it('should return error if user is not found', async (done) => {
+      // @ts-ignore
+      await loginUser({ request: { token }}, clientCallback);
+      // Ensure verifyIdToken was called with the expected arguments
+      expect(verifyIdToken).toHaveBeenCalledWith({ audience: env.GOOGLE_CLIENT_ID, idToken: token });
+      const [, [arg1]] = clientCallback.mock.calls;
+      expect(arg1.message).toEqual('User not found!');
+      done();
     });
 
     it('should login a user in the db if token is valid and return user info', async (done) => {
       // @ts-ignore
       // Ensure user is created
-      await createUser({ request: { token }}, clientCallback);
+      await new User(mockUser).save();
       // @ts-ignore
       await loginUser({ request: { token }}, clientCallback);
       // Ensure verifyIdToken was called with the expected arguments
@@ -50,7 +60,7 @@ describe('Login User rpc', () => {
       // firstTimeItWasCalled = [ firstArgument = Error, secondArgument=undefined ]
       // secondTimeItWasCalled = [ firstArgument=null, secondArgument=response ]
       // calls = [ firstTimeItWasCalled, secondTimeItWasCalled ]
-      const [, [arg1, arg2]] = clientCallback.mock.calls;
+      const [, , [arg1, arg2]] = clientCallback.mock.calls;
       expect(arg1).toBe(null);
       expect(arg2.email).toBe(mockUser.email);
       done();
