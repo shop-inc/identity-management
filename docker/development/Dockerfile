@@ -7,6 +7,7 @@ RUN mkdir /iam
 WORKDIR /iam
 
 COPY package.json /iam
-COPY yarn.lock /iam
 
-RUN yarn install
+RUN yarn install --no-lockfile --silent
+
+EXPOSE 50051

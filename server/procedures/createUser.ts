@@ -1,6 +1,7 @@
 import { ServerUnaryCall } from 'grpc';
 import User from '../database/models/user';
-import { generateJWT, VerificationEmail, verifyGoogleToken } from '../helpers';
+import { VerificationEmail, verifyGoogleToken } from '../helpers';
+import { generateJWT } from '../helpers/jwt';
 
 const createUser = async (incomingMessage: ServerUnaryCall<object> , callback: clientCallback) => {
   try {

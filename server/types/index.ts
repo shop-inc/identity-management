@@ -17,6 +17,20 @@ interface UserConstructor {
   lastUpdated?: string;
   roleName?: string;
   verified?: boolean;
+  dateVerified?: string;
   mailSent?: boolean;
   mailSentDate?: string;
+}
+
+interface JWTPayload {
+  email?: string,
+  narrative?: string,
+}
+
+interface VerificationResponse {
+  status: string,
+  verificationDetails: {
+    verificationStatus: boolean,
+    dateVerified: string,
+  }
 }

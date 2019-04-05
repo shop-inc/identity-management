@@ -45,12 +45,15 @@ describe('Create User rpc', () => {
       expect(verifyIdToken).toHaveBeenCalledWith({ audience: env.GOOGLE_CLIENT_ID, idToken: token });
       // Ensure user is created
       const createdUser = await User.findUserByEmail(mockUser.email);
-      // @ts-ignore
+      if (!createdUser) {
+        expect(1).toEqual(0);
+        return;
+      }
       expect(createdUser.email).toEqual(mockUser.email);
-      // @ts-ignore
       expect(createdUser.mailSent).toBe(false);
+      expect(createdUser.verified).toBe(false);
+      expect(createdUser.dateVerified).toBeFalsy();
       // We check that the role is buyer by default
-      // @ts-ignore
       expect(createdUser.role.roleName).toEqual(buyer.roleName);
       // Ensure the client callback function is called with the expected response
       const [[args1, args2]] = clientCallback.mock.calls;
@@ -69,9 +72,11 @@ describe('Create User rpc', () => {
       // In the second call the verification email was not sent because the first call to send()
       // is built to return an error and therefore, we check that the mail sent status was not updated.
       const storedUser = await User.findUserByEmail(mockUser.email);
-      // @ts-ignore
+      if (!storedUser) {
+        expect(1).toEqual(0);
+        return;
+      }
       expect(storedUser.mailSent).toBe(false);
-      // @ts-ignore
       expect(storedUser.mailSentDate).toBeFalsy();
       done();
     });

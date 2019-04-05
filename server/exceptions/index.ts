@@ -36,4 +36,11 @@ export class UserNotFound extends CustomException {
     this.message = `User not found!`;
   }
 }
+
+export class JWTNarrativeMismatch extends CustomException {
+  constructor(expected: string, actual: string) {
+    super();
+    this.message = `Expected the payload's narrative to equal ${expected} but received ${actual}!`
+  }
+}
 export default CustomException;

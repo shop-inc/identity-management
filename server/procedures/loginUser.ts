@@ -2,7 +2,8 @@ import { TokenPayload } from 'google-auth-library/build/src/auth/loginticket';
 import { ServerUnaryCall } from 'grpc';
 import User from '../database/models/user';
 import { UserNotFound } from '../exceptions';
-import { generateJWT, verifyGoogleToken } from '../helpers';
+import { verifyGoogleToken } from '../helpers';
+import { generateJWT } from '../helpers/jwt';
 
 const loginUser = async (incomingMessage: ServerUnaryCall<object> , callback: clientCallback) => {
   try {

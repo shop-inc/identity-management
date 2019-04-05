@@ -1,20 +1,16 @@
 /** Helper functions that are reused throughout the microservice */
 // @ts-ignore
 import { OAuth2Client } from 'google-auth-library';
-import jwt from 'jsonwebtoken';
 import mjml2html from 'mjml';
 import env from '../config';
 import User from '../database/models/user';
-import {InvalidIdToken} from '../exceptions';
+import { InvalidIdToken } from '../exceptions';
 import { serverLogger } from '../loggers';
+import { generateJWT } from './jwt';
 import MailEventEmitter from './mail';
 import generateMJMLTemplate from './templates/mailTemplate';
 
-const { SECRET_KEY, GOOGLE_CLIENT_ID } = env;
-
-export const generateJWT = (user: User, expiresAfter?: number) => {
-  return jwt.sign({ email: user.email }, SECRET_KEY, { expiresIn: expiresAfter || 60 * 60 * 24 });
-};
+const { GOOGLE_CLIENT_ID } = env;
 
 export class VerificationEmail {
   private readonly mailData: MailData;
@@ -28,7 +24,7 @@ export class VerificationEmail {
     this.mailer.on('success', this.handleSendSuccess);
     this.mailer.on('failure', this.handleSendFailure);
     this.user = user;
-    this.token = generateJWT(user, 60 * 60 * 24 * 3);
+    this.token = generateJWT(user, 60 * 60 * 24 * 3, 'verification');
     this.mailData = {
       to: user.email,
       subject: 'Shop-Inc Account Verification Email',
