@@ -13,7 +13,7 @@ defaults: &defaults
         GRAPH_DB_CONNECTION_TIMEOUT: 15000
     - image: neo4j:3.5.3
       environment:
-        NEO4J_AUTH: none
+        NEO4J_AUTH: neo4j/shopinc
   working_directory: ~/identity-management
 
 install_npm_packages: &install_npm_packages
@@ -93,6 +93,32 @@ jobs:
 
       - *persist_to_workspace
 
+  build_docker:
+    <<: *defaults
+    steps:
+      - *attach_workspace
+      - *install_npm_packages
+      - run:
+          name: Compile TypeScript to JS in dist
+          command: yarn ts
+      - setup_remote_docker
+      - run:
+          name: Build the staging docker image
+          command: docker build -f docker/release/Dockerfile -t iam-server:0.0.1 .
+      - run:
+          name: Tag the staging docker image
+          command: docker tag iam-server:0.0.1 shopinc/iam-server:0.0.1
+      - run:
+          name: Log in to hub.docker.com
+          command: echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin $DOCKER_REGISTRY
+      - run:
+          name: Push the updated docker image to docker hub
+          command: docker push shopinc/iam-server:0.0.1
+      - run:
+          name: Logout of docker hub
+          command: docker logout $DOCKER_REGISTRY
+      - *persist_to_workspace
+
 workflows:
   version: 2
   test_build_deploy:
@@ -101,3 +127,8 @@ workflows:
       - test_and_report:
           requires:
             - checkout_code
+      - build_docker:
+          requires:
+            - checkout_code
+            - test_and_report
+          <<: *filters
