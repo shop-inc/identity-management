@@ -15,8 +15,9 @@ class User {
         `MATCH (u:User { email: $email })-[relIs:IS]->(role:Role),
                          (u)-[:HAS]->(p:Profile)
                    RETURN u.name AS name, u.email AS email, p.imageUrl AS picture, p.lastUpdated AS lastUpdated,
-                    relIs.verified AS verified, relIs.mailSent AS mailSent,
-                     relIs.mailSentDate AS mailSentDate, role.roleName as roleName`
+                     relIs.verified AS verified, relIs.dateVerified AS dateVerified,
+                     relIs.mailSent AS mailSent, relIs.mailSentDate AS mailSentDate,
+                     role.roleName as roleName`
         , { email });
       if (!records.length) {
         return false;
@@ -26,6 +27,7 @@ class User {
         name: record.get('name'),
         email: record.get('email'),
         verified: record.get('verified'),
+        dateVerified: record.get('dateVerified'),
         mailSent: record.get('mailSent'),
         mailSentDate: record.get('mailSentDate'),
         roleName: record.get('roleName'),
@@ -44,6 +46,7 @@ class User {
   public profile: Profile;
   public role: Role;
   public verified: boolean;
+  public dateVerified: string;
   public mailSent: boolean;
   public mailSentDate: string;
 
@@ -58,12 +61,12 @@ class User {
     // Role is set to buyer by default
     this.role = identity.roleName ? new Role(identity.roleName) : buyer;
     this.verified = identity.verified || false;
+    this.dateVerified = identity.dateVerified || '';
     this.mailSent = identity.mailSent || false;
     this.mailSentDate = identity.mailSentDate || '';
   }
 
   public async save() {
-    const params: object = this.serialize();
     try {
       // If this user exists, exit
       const existingUser = await User.findUserByEmail(this.email);
@@ -82,8 +85,9 @@ class User {
           (user)-[:HAS]->(profile)
         WITH user AS u
         MATCH (r:Role { roleName: $roleName })
-        CREATE (u)-[:IS { verified: $verified, mailSent: $mailSent, mailSentDate: $mailSentDate }]->(r);
-          `, params);
+        CREATE (u)-[:IS { verified: $verified, dateVerified: $dateVerified,
+        mailSent: $mailSent, mailSentDate: $mailSentDate }]->(r);
+          `, this.serialize());
     } catch (e) {
       // TODO Handle exception
       /* istanbul ignore next */
@@ -98,6 +102,7 @@ class User {
     lastUpdated: this.profile.lastUpdated,
     roleName: this.role.roleName,
     verified: this.verified,
+    dateVerified: this.dateVerified,
     mailSent: this.mailSent,
     mailSentDate: this.mailSentDate,
   });
@@ -109,7 +114,7 @@ class User {
         mailSent: true,
         mailSentDate: new Date().toISOString(),
         ...properties,
-      }
+      };
 
       await db.run(
         'MATCH (: User { email: $email })-[r:IS]->(:Role { roleName: $roleName }) SET r += $props;',
@@ -138,6 +143,27 @@ class User {
       }
     }
     return;
+  }
+
+  public async verify() {
+    try {
+      const props = {
+        verified: true,
+        dateVerified: new Date().toISOString(),
+      };
+      await db.run(
+        'MATCH (: User { email: $email })-[r:IS]->(:Role { roleName: $roleName }) SET r += $props;',
+        {
+          ...this.serialize(),
+          props,
+        });
+      this.verified = props.verified;
+      this.dateVerified = props.dateVerified;
+    } catch (e) {
+      // TODO Handle exception
+      /* istanbul ignore next */
+      throw e;
+    }
   }
 }
 
