@@ -1,10 +1,11 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: graphdb-deployment
+  name: graphdb-statefulset
   labels:
     app: graphdb
 spec:
+  serviceName: "graphdb-service"
   replicas: 1
   selector:
     matchLabels:
@@ -24,3 +25,15 @@ spec:
           envFrom:
             - secretRef:
                 name: graphdb-secrets
+          volumeMounts:
+          - name: www
+            mountPath: /data
+
+  volumeClaimTemplates:
+  - metadata:
+      name: www
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
