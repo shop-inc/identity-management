@@ -7,7 +7,7 @@ const requiredVariables: string[] = [...r];
 // Define optional environment variables and their defaults for development
 const optionalVariables = {
   GRAPH_DB_USER: 'neo4j',
-  GRAPH_DB_PASSWORD: 'neo4j',
+  GRAPH_DB_PASSWORD: 'shopinc',
   GRAPH_DB_PROTOCOL: 'bolt',
   GRAPH_DB_HOST: 'localhost',
   GRAPH_DB_NAME: 'shopinc_dev',
