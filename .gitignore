@@ -70,6 +70,7 @@ dist/
 .DS_Store
 
 neo4j
+mongo
 
 k8s/graphdb/secrets.yml
 

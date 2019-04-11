@@ -25,6 +25,10 @@ interface UserConstructor {
 interface JWTPayload {
   email?: string,
   narrative?: string,
+  jti?: string,
+  iat?: number,
+  exp?: number,
+  aud?: string
 }
 
 interface VerificationResponse {

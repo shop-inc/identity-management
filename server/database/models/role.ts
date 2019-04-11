@@ -1,4 +1,6 @@
-import db from '../index';
+import databases from '../index';
+
+const db = databases.graphdb;
 
 class Role {
 

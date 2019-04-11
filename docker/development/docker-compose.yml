@@ -13,6 +13,7 @@ services:
     container_name: 'iam-server-dev'
     environment:
       GRAPH_DB_HOST: graphdb-dev
+      MONGO_DB_HOST: mongodb-dev
       GRPC_SERVER_HOST: 0.0.0.0
     networks:
       - iam-net-dev
@@ -23,6 +24,8 @@ services:
       - "50051:50051"
     depends_on:
       graphdb-dev:
+        condition: service_healthy
+      mongodb-dev:
         condition: service_healthy
     entrypoint: ["sh", "/iam/docker/development/entrypoint.sh"]
 
@@ -45,3 +48,22 @@ services:
       interval: 5s
       timeout: 10s
       retries: 5
+    logging:
+      driver: none
+
+  mongodb-dev:
+    container_name: 'mongodb-dev'
+    image: mongo:4.0.8
+    networks:
+      - iam-net-dev
+    ports:
+      - "27017:27017"
+    volumes:
+      - ../../mongo/dev/data:/data
+    healthcheck:
+      test: ['CMD-SHELL', 'mongo --eval "db.runCommand(\"ping\").ok" --quiet']
+      interval: 5s
+      timeout: 10s
+      retries: 5
+    logging:
+      driver: none

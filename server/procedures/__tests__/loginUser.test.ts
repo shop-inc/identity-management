@@ -1,23 +1,23 @@
 import { verifyIdToken } from '../../../__mocks__/google-auth-library';
 import env from '../../config';
 import User from '../../database/models/user';
-import { clearDB } from '../../database/queries';
-import seedDB from '../../database/seeders';
+import { clearGraphDB } from '../../database/queries';
+import seedGraphDB from '../../database/seeders';
 import loginUser from '../loginUser';
 import { mockUser } from '../mockData';
 
 describe('Login User rpc', () => {
   const clientCallback = jest.fn();
-  const token: string = 'this is my token';
+  const token = 'this is my token';
 
   beforeAll(async (done) => {
-    await clearDB();
-    await seedDB();
+    await clearGraphDB();
+    await seedGraphDB();
     done();
   });
 
   afterAll(async (done) => {
-    await clearDB();
+    await clearGraphDB();
     done();
   });
 

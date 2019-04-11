@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import {v4 as uuid} from 'uuid';
 import env from '../config';
 import User from '../database/models/user';
 import { JWTNarrativeMismatch } from '../exceptions';
@@ -9,7 +10,7 @@ export const generateJWT = (user: User, expiresAfter?: number, narrative?: strin
   return jwt.sign(
     { email: user.email, narrative: narrative || 'login' },
     SECRET_KEY,
-    { expiresIn: expiresAfter || 60 * 60 * 24 },
+    { expiresIn: expiresAfter || 60 * 60 * 24, jwtid: uuid() },
   );
 };
 

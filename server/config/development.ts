@@ -12,6 +12,7 @@ const optionalVariables = {
     GRAPH_DB_HOST: 'localhost',
     GRAPH_DB_NAME: 'shopinc_dev',
     GRPC_SERVER_HOST: '127.0.0.1',
+    MONGO_DB_HOST: '127.0.0.1',
     ...generalOptionalVariables,
 };
 

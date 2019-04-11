@@ -1,7 +1,9 @@
 import { UnverifiedUser } from '../../exceptions';
-import db from '../index';
+import databases from '../index';
 import Profile from './profile';
 import Role, { administrator, buyer } from './role';
+
+const db = databases.graphdb;
 
 class User {
   /**
