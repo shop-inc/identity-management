@@ -18,12 +18,12 @@ export const seedAdminUser = async () => {
   await adminUser.save();
 };
 
-const seedDB = async () => {
+const seedGraphDB = async () => {
   await seedRoles();
   await seedAdminUser();
 };
 
-export default seedDB;
+export default seedGraphDB;
 
 if (require.main === module) {
   /* istanbul ignore next */
@@ -32,5 +32,5 @@ if (require.main === module) {
     process.exit();
   });
   /* istanbul ignore next */
-  seedDB().then(() => process.exit(0));
+  seedGraphDB().then(() => process.exit(0));
 }

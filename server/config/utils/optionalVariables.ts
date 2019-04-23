@@ -7,4 +7,5 @@ export default {
     PROTOBUF_URL: 'https://raw.githubusercontent.com/',
     PROTOBUF_BRANCH: 'develop',
     GRAPH_DB_CONNECTION_TIMEOUT: 5000,
+    MONGO_DB_PORT: 27017,
 };

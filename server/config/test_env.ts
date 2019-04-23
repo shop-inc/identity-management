@@ -20,7 +20,8 @@ const optionalVariables = {
   FRONTEND_URL: 'https://url.frontend',
   MAILGUN_DOMAIN: 'mailgun',
   MAILGUN_API_KEY: 'mailgun',
-
+  MONGO_DB_HOST: '127.0.0.1',
+  MONGO_DB_NAME: 'test',
   ...generalOptionalVariables,
 };
 

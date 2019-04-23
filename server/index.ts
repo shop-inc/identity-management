@@ -15,11 +15,12 @@ const getProtocolBuffer = async () => {
   const {PROTOBUF_URL, PROTOBUF_USER, PROTOBUF_BRANCH } = env;
   const PROTO_PATH = `${PROTOBUF_URL}${PROTOBUF_USER}/proto-broker/${PROTOBUF_BRANCH}/`;
   return new Promise((fulfil, reject) => {
-    https.get(`${PROTO_PATH}${basename(IDENTITY_PROTO)}`, (response) => {
+    const IDENTITY_PROTO_URL = `${PROTO_PATH}${basename(IDENTITY_PROTO)}`;
+    https.get(IDENTITY_PROTO_URL, (response) => {
       response.setEncoding('utf-8');
       const writeStream = fs.createWriteStream(IDENTITY_PROTO);
       writeStream.on('close', () => {
-        serverLogger('Successfully retrieved protocol buffers');
+        serverLogger(`Successfully retrieved protocol buffers from ${IDENTITY_PROTO_URL}`);
         fulfil();
       });
       response.on('error', reject);
