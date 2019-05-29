@@ -8,7 +8,7 @@ const procedures = {
   createUser,
   loginUser,
   verifyUser,
-  logout: logoutUser,
+  logoutUser,
 };
 
 export default procedures;

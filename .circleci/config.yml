@@ -121,7 +121,7 @@ jobs:
           command: docker push shopinc/iam-server:0.0.1
       - run:
           name: Logout of docker hub
-          command: docker logoutUser $DOCKER_REGISTRY
+          command: docker logout $DOCKER_REGISTRY 
       - *persist_to_workspace
 
 workflows:
