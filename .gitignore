@@ -75,3 +75,5 @@ mongo
 k8s/graphdb/secrets.yml
 
 k8s/iam-server/secrets.yml
+
+k8s/mongodb/secrets.yml
