@@ -25,6 +25,8 @@ spec:
           env:
           - name:  GRAPH_DB_HOST
             value: graphdb-service
+          - name: MONGO_DB_HOST
+            value: mongodb-service
           envFrom:
             - secretRef:
                 name: iam-secrets
